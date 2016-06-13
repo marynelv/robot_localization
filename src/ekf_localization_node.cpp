@@ -37,8 +37,12 @@
 int main(int argc, char **argv)
 {
   ros::init(argc, argv, "ekf_navigation_node");
+  ros::NodeHandle nhLocal("~");
+  std::vector<double> args(1, 0);
 
-  RobotLocalization::RosEkf ekf;
+  nhLocal.param("decaying_vel_factor", args[0], 1.0);
+
+  RobotLocalization::RosEkf ekf(args);
 
   ekf.run();
 

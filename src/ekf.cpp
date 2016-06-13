@@ -42,9 +42,10 @@
 
 namespace RobotLocalization
 {
-  Ekf::Ekf(std::vector<double>) :
+  Ekf::Ekf(std::vector<double> args) :
     FilterBase()  // Must initialize filter base!
   {
+    decaying_vel_factor_ = args[0];
   }
 
   Ekf::~Ekf()
@@ -271,6 +272,11 @@ namespace RobotLocalization
     transferFunction_(StateMemberVx, StateMemberAx) = delta;
     transferFunction_(StateMemberVy, StateMemberAy) = delta;
     transferFunction_(StateMemberVz, StateMemberAz) = delta;
+
+    // decaying velocity model
+    transferFunction_(StateMemberVx, StateMemberVx) = decaying_vel_factor_;
+    transferFunction_(StateMemberVy, StateMemberVy) = decaying_vel_factor_;
+    transferFunction_(StateMemberVz, StateMemberVz) = decaying_vel_factor_; 
 
     // Prepare the transfer function Jacobian. This function is analytically derived from the
     // transfer function.

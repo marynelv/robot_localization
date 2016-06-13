@@ -80,6 +80,10 @@ class Ekf: public FilterBase
     //! @param[in] delta - The time step over which to predict.
     //!
     void predict(const double referenceTime, const double delta);
+
+ protected:
+    
+    double decaying_vel_factor_;
 };
 
 }  // namespace RobotLocalization
